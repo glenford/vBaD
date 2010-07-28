@@ -3,7 +3,22 @@ vBaD - Visualising Builds and Deploys
 =====================================
 
 vBad aims to provide a simple to setup and use platform
-to help you visualise your builds and deploys.
+to help you visualise your builds and deploys by providing
+a style of mashup dashboard.
+
+History
+-------
+
+vBaD is based upon some cobbled together scripts and web
+pages that I put together some time ago.  Its an attempt
+to take those to the next level.
+
+License
+-------
+
+vBaD is licensed under the Apache 2.0 License
+
+
 
 
 IMPORTANT
