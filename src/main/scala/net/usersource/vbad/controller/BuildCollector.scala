@@ -5,8 +5,8 @@ import net.usersource.vbad.model.BuildStatus
 import net.liftweb.actor.LiftActor
 
 
-case object GetAllBuildStatuses
-
+case object GetBuildStatuses
+case object UpdateBuildStatuses
 
 
 class BuildCollector extends LiftActor {
@@ -18,10 +18,15 @@ class BuildCollector extends LiftActor {
 
 
   def messageHandler = {
-    case GetAllBuildStatuses => reply(get)
+    case GetBuildStatuses => reply(getBuilds)
+    case UpdateBuildStatuses => update
   }
 
-  def get: List[BuildStatus] = {
+  def update = {
+    // periodic upate tick
+  }
+
+  def getBuilds: List[BuildStatus] = {
     builds
   }
 
@@ -30,6 +35,6 @@ class BuildCollector extends LiftActor {
 object BuildCollector {
   val actor = new BuildCollector
   
-  def builds: List[BuildStatus] = { (actor !! GetAllBuildStatuses).asA[List[BuildStatus]].get }
+  def builds: List[BuildStatus] = { (actor !! GetBuildStatuses).asA[List[BuildStatus]].get }
 }
 
