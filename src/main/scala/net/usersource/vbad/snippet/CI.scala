@@ -4,7 +4,7 @@ import net.usersource.vbad.model.CIPlatform
 import net.liftweb.mapper.{Ascending, OrderBy}
 import net.liftweb.http.SHtml._
 import net.liftweb.http.S._
-import net.liftweb.util.BindHelpers
+import net.liftweb.util.Helpers._
 import net.liftweb.common.{Box, Full, Empty}
 import net.liftweb.http.RequestVar
 import xml.{Group, NodeSeq, Text}
@@ -14,7 +14,6 @@ class CI {
   private object selectedCIPlatform extends RequestVar[Box[CIPlatform]](Empty)
 
   def platforms: NodeSeq = {
-
     CIPlatform.find() match {
       case Empty => CIPlatform.create.name("bonus-cruise").platform("cruise").username("admin").password("unib3t").url("http://").save
       case _ => ;
@@ -53,4 +52,12 @@ class CI {
              "delete" -> submit("Delete", deleteCIPlatform _))
       }) openOr {error("Platform not found"); redirectTo("/ci/index.html")}
   }
+
+  def edit(xhtml: Group): NodeSeq =
+    selectedCIPlatform.map(_.
+                   toForm(Empty, saveCIPlatform _) ++ <tr>
+      <td><a href="/ci/index.html">Cancel</a></td>
+      <td><input type="submit" value="Save"/></td>
+                                                </tr>
+  ) openOr {error("User not found"); redirectTo("/ci/index.html")}
 }
