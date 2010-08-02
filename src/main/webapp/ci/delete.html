@@ -1,3 +1,6 @@
 <lift:surround with="default" at="content">
-  <p>delete</p>
+  <lift:CI.confirmDelete form="post">
+    Do you really want to delete <xmp:name/>
+    <a href="/ci/index.html">No</a> <xmp:delete/>
+  </lift:CI.confirmDelete>
 </lift:surround>

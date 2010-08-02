@@ -1,11 +1,13 @@
 package net.usersource.vbad.snippet
 
-import xml.{NodeSeq,Text}
 import net.usersource.vbad.model.CIPlatform
 import net.liftweb.mapper.{Ascending, OrderBy}
 import net.liftweb.http.SHtml._
+import net.liftweb.http.S._
+import net.liftweb.util.BindHelpers
 import net.liftweb.common.{Box, Full, Empty}
 import net.liftweb.http.RequestVar
+import xml.{Group, NodeSeq, Text}
 
 class CI {
 
@@ -25,8 +27,30 @@ class CI {
           <td>{link("/ci/edit", () => selectedCIPlatform(Full(p)), Text("Edit"))}</td>
           <td>{link("/ci/delete", () => selectedCIPlatform(Full(p)), Text("Delete"))}</td>
         </tr>)
-
   }
 
-  def add = { }
+  private def saveCIPlatform(platform: CIPlatform) = platform.validate match {
+    case Nil => platform.save; redirectTo("/ci/index.html")
+    case x => error(x); selectedCIPlatform(Full(platform))
+  }
+
+  def add(in: NodeSeq): NodeSeq = {
+    selectedCIPlatform.is.openOr(new CIPlatform).toForm(Empty, saveCIPlatform _) ++ <tr>
+      <td><a href="/ci/index.html">Cancel</a></td>
+      <td><input type="submit" value="Create"/></td>
+    </tr>
+  }
+
+  def confirmDelete(xhtml: Group): NodeSeq = {
+    (for (platform <- selectedCIPlatform.is) // find the user
+     yield {
+        def deleteCIPlatform() {
+          notice("Platform " + platform.name + " deleted")
+          platform.delete_!
+          redirectTo("/ci/index.html")
+        }
+        bind("xmp", xhtml, "name" -> (platform.name.is),
+             "delete" -> submit("Delete", deleteCIPlatform _))
+      }) openOr {error("Platform not found"); redirectTo("/ci/index.html")}
+  }
 }
