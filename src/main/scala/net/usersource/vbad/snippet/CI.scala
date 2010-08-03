@@ -14,12 +14,8 @@ class CI {
   private object selectedCIPlatform extends RequestVar[Box[CIPlatform]](Empty)
 
   def platforms: NodeSeq = {
-    CIPlatform.find() match {
-      case Empty => CIPlatform.create.name("bonus-cruise").platform("cruise").username("admin").password("unib3t").url("http://").save
-      case _ => ;
-    }
 
-    <h3>List of Platforms</h3> ::
+    <h3>List of Platforms</h3> :: <br/> ::
     <tr>{CIPlatform.htmlHeaders}<th>Edit</th><th>Delete</th></tr> ::
       CIPlatform.findAll(OrderBy(CIPlatform.id, Ascending)).flatMap(p =>
         <tr>{p.htmlLine}
@@ -29,13 +25,13 @@ class CI {
   }
 
   private def saveCIPlatform(platform: CIPlatform) = platform.validate match {
-    case Nil => platform.save; redirectTo("/ci/index.html")
+    case Nil => platform.save; redirectTo("/ci/index")
     case x => error(x); selectedCIPlatform(Full(platform))
   }
 
   def add(in: NodeSeq): NodeSeq = {
     selectedCIPlatform.is.openOr(new CIPlatform).toForm(Empty, saveCIPlatform _) ++ <tr>
-      <td><a href="/ci/index.html">Cancel</a></td>
+      <td><a href="/ci/index">Cancel</a></td>
       <td><input type="submit" value="Create"/></td>
     </tr>
   }
@@ -44,20 +40,17 @@ class CI {
     (for (platform <- selectedCIPlatform.is) // find the user
      yield {
         def deleteCIPlatform() {
-          notice("Platform " + platform.name + " deleted")
           platform.delete_!
-          redirectTo("/ci/index.html")
+          redirectTo("/ci/index")
         }
-        bind("xmp", xhtml, "name" -> (platform.name.is),
-             "delete" -> submit("Delete", deleteCIPlatform _))
-      }) openOr {error("Platform not found"); redirectTo("/ci/index.html")}
+        bind("xmp", xhtml, "name" -> (platform.name.is),"delete" -> submit("Delete", deleteCIPlatform _))
+      }) openOr {error("Platform not found"); redirectTo("/ci/index")}
   }
 
   def edit(xhtml: Group): NodeSeq =
-    selectedCIPlatform.map(_.
-                   toForm(Empty, saveCIPlatform _) ++ <tr>
-      <td><a href="/ci/index.html">Cancel</a></td>
+    selectedCIPlatform.map(_.toForm(Empty, saveCIPlatform _) ++ <tr>
+      <td><a href="/ci/index">Cancel</a></td>
       <td><input type="submit" value="Save"/></td>
-                                                </tr>
-  ) openOr {error("User not found"); redirectTo("/ci/index.html")}
+    </tr>
+  ) openOr {error("User not found"); redirectTo("/ci/index")}
 }
