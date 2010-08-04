@@ -11,8 +11,7 @@ import Loc._
 import mapper._
 
 import net.usersource.vbad.comet._
-import net.usersource.vbad.model.CIPlatform
-
+import net.usersource.vbad.model.{Site, CIPlatform}
 
 class Boot {
 
@@ -29,6 +28,7 @@ class Boot {
 
   private def setupSchemify = {
     Schemifier.schemify(true, Schemifier.infoF _, CIPlatform)
+    Schemifier.schemify(true, Schemifier.infoF _, Site)
   }
 
   private def setupLiftSnippets = {
