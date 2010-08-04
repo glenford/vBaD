@@ -30,11 +30,14 @@ class IFrameRotate(initSession: LiftSession,
 
   def getIFrame = {
     val sites = Site.findAll()
-
-    frameNumber = frameNumber + 1
-    if( frameNumber >= sites.length ) frameNumber = 0;
-
-	  <iframe src={sites(frameNumber).url.get} width="1024" height="768"></iframe>
+    if( sites.length > 0 ) {
+      frameNumber = frameNumber + 1
+      if( frameNumber >= sites.length ) frameNumber = 0;
+	    <iframe src={sites(frameNumber).url.get} width="1024" height="768"></iframe>
+    }
+    else {
+      <iframe src="_blank" width="1024" height="768">No Sites Configured</iframe>
+    }
   }
 
   def timeSpan = (<span id={spanId}>{getIFrame}</span>)
