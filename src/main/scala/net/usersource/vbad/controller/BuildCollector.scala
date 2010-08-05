@@ -1,13 +1,21 @@
 package net.usersource.vbad.controller
 
 
-import net.usersource.vbad.model.BuildStatus
 import net.liftweb.actor.LiftActor
+import net.usersource.vbad.model._
+import net.usersource.vbad.lib.BuildStatus
+
+
+
+//
+//   [build]=>[buildStatus]
+//
+//
+
 
 
 case object GetBuildStatuses
 case object UpdateBuildStatuses
-
 
 class BuildCollector extends LiftActor {
 
