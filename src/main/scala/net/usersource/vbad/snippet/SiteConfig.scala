@@ -15,7 +15,7 @@ class SiteConfig {
   private object selectedSite extends RequestVar[Box[Site]](Empty)
 
   def sites: NodeSeq = {
-    <h3>List of Platforms</h3> :: <br/> ::
+    <h3>List of Sites</h3> :: <br/> ::
     <tr>{Site.htmlHeaders}<th>Edit</th><th>Delete</th></tr> ::
       Site.findAll(OrderBy(Site.id, Ascending)).flatMap(site =>
         <tr>{site.htmlLine}
