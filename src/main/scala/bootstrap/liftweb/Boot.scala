@@ -45,6 +45,13 @@ class Boot {
                              session) =>
                                new IFrameRotate(session, Full("RotatingIFrame"),
                                                 name, defaultXml, attributes)
+      case CometCreationInfo("RotatingBuildStatus",
+                             name,
+                             defaultXml,
+                             attributes,
+                             session) =>
+                               new BuildStatusRotate(session, Full("RotatingBuildStatus"),
+                                                     name, defaultXml, attributes)
     }
   }
 
