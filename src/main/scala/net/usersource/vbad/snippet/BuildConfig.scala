@@ -2,12 +2,12 @@ package net.usersource.vbad.snippet
 
 import net.liftweb.http.RequestVar
 import net.liftweb.mapper.{Ascending, OrderBy}
-import xml.{Text, NodeSeq}
 import net.liftweb.http.SHtml._
 import net.liftweb.http.S._
 import net.liftweb.util.Helpers._
 import net.liftweb.common.{Full, Empty, Box}
 import net.usersource.vbad.model.Build
+import xml.{Group, Text, NodeSeq}
 
 
 class BuildConfig {
@@ -36,4 +36,21 @@ class BuildConfig {
     </tr>
   }
 
+  def confirmDelete(xhtml: Group): NodeSeq = {
+    (for (build <- selectedBuild.is) // find the user
+     yield {
+        def deleteBuild() {
+          build.delete_!
+          redirectTo("/build/index")
+        }
+        bind("xmp", xhtml, "name" -> (build.name.is),"delete" -> submit("Delete", deleteBuild _))
+      }) openOr {error("Build not found"); redirectTo("/build/index")}
+  }
+
+  def edit(xhtml: Group): NodeSeq =
+    selectedBuild.map(_.toForm(Empty, saveBuild _) ++ <tr>
+      <td><a href="/build/index">Cancel</a></td>
+      <td><input type="submit" value="Save"/></td>
+    </tr>
+  ) openOr {error("Build not found"); redirectTo("/build/index")}
 }

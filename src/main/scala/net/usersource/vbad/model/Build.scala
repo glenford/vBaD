@@ -13,7 +13,7 @@ class Build extends LongKeyedMapper[Build] with IdPK {
   }
 
   object buildName extends MappedString(this, 256) {
-    override def validations = { valMinLen(10,"Build Name must be more than 2 characters") _ :: super.validations }
+    override def validations = { valMinLen(2,"Build Name must be more than 2 characters") _ :: super.validations }
   }
 
   object platform extends LongMappedMapper(this, CIPlatform) {
