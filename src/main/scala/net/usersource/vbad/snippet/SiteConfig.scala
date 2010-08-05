@@ -1,13 +1,13 @@
 package net.usersource.vbad.snippet
 
 import net.liftweb.mapper.{Ascending, OrderBy}
-import xml.{Text, NodeSeq}
 import net.usersource.vbad.model.Site
 import net.liftweb.http.SHtml._
 import net.liftweb.http.S._
 import net.liftweb.util.Helpers._
 import net.liftweb.http.RequestVar
 import net.liftweb.common.{Empty, Box, Full}
+import xml.{Group, Text, NodeSeq}
 
 
 class SiteConfig {
@@ -35,4 +35,22 @@ class SiteConfig {
       <td><input type="submit" value="Create"/></td>
     </tr>
   }
+
+  def confirmDelete(xhtml: Group): NodeSeq = {
+    (for (site <- selectedSite.is) // find the user
+     yield {
+        def deleteSite() {
+          site.delete_!
+          redirectTo("/site/index")
+        }
+        bind("xmp", xhtml, "name" -> (site.name.is),"delete" -> submit("Delete", deleteSite _))
+      }) openOr {error("Platform not found"); redirectTo("/site/index")}
+  }
+
+  def edit(xhtml: Group): NodeSeq =
+    selectedSite.map(_.toForm(Empty, saveSite _) ++ <tr>
+      <td><a href="/site/index">Cancel</a></td>
+      <td><input type="submit" value="Save"/></td>
+    </tr>
+  ) openOr {error("Site not found"); redirectTo("/site/index")}
 }

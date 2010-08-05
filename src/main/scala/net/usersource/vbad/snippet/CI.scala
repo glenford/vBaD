@@ -37,7 +37,7 @@ class CI {
   }
 
   def confirmDelete(xhtml: Group): NodeSeq = {
-    (for (platform <- selectedCIPlatform.is) // find the user
+    (for (platform <- selectedCIPlatform.is)
      yield {
         def deleteCIPlatform() {
           platform.delete_!
@@ -52,5 +52,5 @@ class CI {
       <td><a href="/ci/index">Cancel</a></td>
       <td><input type="submit" value="Save"/></td>
     </tr>
-  ) openOr {error("User not found"); redirectTo("/ci/index")}
+  ) openOr {error("Platform not found"); redirectTo("/ci/index")}
 }

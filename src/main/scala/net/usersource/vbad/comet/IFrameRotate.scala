@@ -36,7 +36,7 @@ class IFrameRotate(initSession: LiftSession,
 	    <iframe src={sites(frameNumber).url.get} width="1024" height="768"></iframe>
     }
     else {
-      <iframe src="_blank" width="1024" height="768">No Sites Configured</iframe>
+      <iframe src="http://github.com/glenford/vBaD" width="1024" height="768">No Sites Configured</iframe>
     }
   }
 
@@ -51,6 +51,6 @@ class IFrameRotate(initSession: LiftSession,
   initCometActor(initSession, initType, initName, initDefaultXml, initAttributes)
 }
 
-case object Tick
+  case object Tick
 }
 
