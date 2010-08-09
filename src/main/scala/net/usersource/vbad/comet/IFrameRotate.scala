@@ -1,13 +1,12 @@
-package net.usersource.vbad.comet {
+package net.usersource.vbad.comet
 
-import _root_.net.liftweb._
-import http._
-import common._
-import util._
-import Helpers._
-import js._
-import JsCmds._
-import _root_.scala.xml.{Text, NodeSeq}
+
+import net.liftweb.http._
+import net.liftweb.http.js.JsCmds.SetHtml
+import net.liftweb.common._
+import net.liftweb.util._
+import net.liftweb.util.Helpers._
+import scala.xml.{Text, NodeSeq}
 import net.usersource.vbad.model.Site
 
 class IFrameRotate(initSession: LiftSession,
@@ -51,6 +50,5 @@ class IFrameRotate(initSession: LiftSession,
   initCometActor(initSession, initType, initName, initDefaultXml, initAttributes)
 }
 
-  case object Tick
-}
+case object Tick
 

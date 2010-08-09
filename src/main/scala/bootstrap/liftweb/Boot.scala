@@ -10,7 +10,7 @@ import sitemap._
 import Loc._
 import mapper._
 
-import net.usersource.vbad.comet._
+import net.usersource.vbad.comet.{IFrameRotate,BuildStatusRotate}
 import net.usersource.vbad.model.{Build, Site, CIPlatform}
 
 class Boot {
@@ -38,21 +38,22 @@ class Boot {
 
   private def setupComet = {
     LiftRules.cometCreation.append {
-      case CometCreationInfo("RotatingIFrame",
-                             name,
-                             defaultXml,
-                             attributes,
-                             session) =>
-                               new IFrameRotate(session, Full("RotatingIFrame"),
-                                                name, defaultXml, attributes)
       case CometCreationInfo("RotatingBuildStatus",
                              name,
                              defaultXml,
                              attributes,
-                             session) =>
-                               new BuildStatusRotate(session, Full("RotatingBuildStatus"),
-                                                     name, defaultXml, attributes)
+                             session) => {
+                               new BuildStatusRotate(session, Full("RotatingBuildStatus"),name, defaultXml, attributes)
+      }
+      case CometCreationInfo("RotatingIFrame",
+                             name,
+                             defaultXml,
+                             attributes,
+                             session) => {
+                               new IFrameRotate(session, Full("RotatingIFrame"),name, defaultXml, attributes)
+      }
     }
+
   }
 
   def boot {
