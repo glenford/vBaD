@@ -16,9 +16,9 @@ class BuildCollector extends LiftActor {
   case object Update
 
   var builds: List[BuildStatus] = Nil
-  builds = new BuildStatus("bonus", "passed", "now", "me") :: builds
-  builds = new BuildStatus("crm", "passed", "1 hr ago", "jimbo") :: builds
-  builds = new BuildStatus("goalwire", "failed", "3 days ago", "lance") :: builds
+  builds = new BuildStatus("bonus", "passed", "now") :: builds
+  builds = new BuildStatus("crm", "passed", "1 hr ago") :: builds
+  builds = new BuildStatus("goalwire", "failed", "3 days ago") :: builds
 
   ActorPing.schedule(this, Update, 60 seconds)
 
