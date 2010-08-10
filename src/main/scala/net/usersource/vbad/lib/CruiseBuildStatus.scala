@@ -23,8 +23,8 @@ object CruiseBuildFactory {
                            (xmlNode \ "@lastBuildTime").text)
   }
 
-  def build( name:String, source: String ): CruiseBuildStatus = {
-    listFromXml(source).filter( status => status.name.startsWith( name + " :: ") ).head
+  def build( name:String, source: String ): Option[CruiseBuildStatus] = {
+    listFromXml(source).filter( status => status.name.startsWith( name + " :: ") ).headOption
   }
 
 }

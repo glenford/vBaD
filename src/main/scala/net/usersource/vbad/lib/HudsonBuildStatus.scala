@@ -22,7 +22,7 @@ object HudsonBuildFactory {
   }
 
   private def getBuildStatus( title: String ): String = {
-    title.substring(title.findIndexOf(c => c == '#')+1)
+    title.substring(title.findIndexOf(c => c == '(')+1,title.findIndexOf(c => c == ')'))
   }
 
   private def fromXml(xmlNode:Node):HudsonBuildStatus = {
@@ -31,8 +31,8 @@ object HudsonBuildFactory {
                            (xmlNode \ "published").text )
   }
 
-  def build( name:String, source: String ): HudsonBuildStatus = {
-    listFromXml(source).filter( status => status.name.startsWith( name + " #") ).head
+  def build( name:String, source: String ): Option[HudsonBuildStatus] = {
+    listFromXml(source).filter( status => status.name.equalsIgnoreCase( name ) ).headOption
   }
 
 
