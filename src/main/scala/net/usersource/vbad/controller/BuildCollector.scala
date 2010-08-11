@@ -38,6 +38,7 @@ class BuildCollector extends LiftActor {
   }
 
   def getBuild( name: String, platform: CIPlatform ): Option[BuildStatus] = {
+    try {
     val response = getPlatformResponse(platform)
     if( response.status == 200 ) {
       if( platform.platform.is.equalsIgnoreCase("cruise") ) {
@@ -54,6 +55,12 @@ class BuildCollector extends LiftActor {
     else {
       println("no valid response")
       None
+    }
+    }
+    catch {
+      case e:Exception => { println( "Exception in getting platform: " + e)
+                            None }
+      case _ => None
     }
   }
 
