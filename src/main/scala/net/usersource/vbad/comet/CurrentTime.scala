@@ -1,0 +1,70 @@
+package net.usersource.vbad.comet
+
+
+import net.liftweb.http.js.JsCmds.SetHtml
+import scala.xml.NodeSeq
+import net.liftweb.common.{Full, Box}
+import net.liftweb.http.{CometActor, LiftSession}
+import net.liftweb.util.ActorPing
+import net.liftweb.util.Helpers._
+import org.joda.time.{DateTimeZone, DateTime}
+import org.joda.time.format.DateTimeFormatterBuilder
+
+class CurrentTime(initSession: LiftSession,
+                  initType: Box[String],
+                  initName: Box[String],
+                  initDefaultXml: NodeSeq,
+                  initAttributes: Map[String, String]) extends CometActor {
+
+
+  override def defaultPrefix = Full("vbad")
+
+  setPingIn
+
+  private lazy val spanId = uniqueId + "_vbad_current_time"
+
+  def setPingIn = ActorPing.schedule(this, Tick, 5 seconds)
+
+  def render = {
+    bind("currentTime" -> span)
+  }
+
+  def getCurrentTime = {
+
+    val dt = new DateTime
+    val dtLondon = dt.toDateTime(DateTimeZone.forID("Europe/London"));
+    val dtStockholm = dt.toDateTime(DateTimeZone.forID("Europe/Stockholm"));
+    val fmt = new DateTimeFormatterBuilder()
+                  .appendHourOfDay(2)
+                  .appendLiteral(':')
+                  .appendMinuteOfHour(2)
+                  .appendLiteral(':')
+                  .appendMinuteOfHour(2)
+                  .appendLiteral(" - ")
+                  .appendDayOfMonth(2)
+                  .appendLiteral(' ')
+                  .appendMonthOfYearText
+                  .appendLiteral(' ')
+                  .appendYear(4,4)
+                  .toFormatter;
+
+    <span id="current_time">
+      <span id="current_time_london">London {dtLondon.toString(fmt)}<br/></span>
+      <span id="current_time_stockholm">Stockholm {dtStockholm.toString(fmt)}<br/></span>
+    </span>
+  }
+
+  def span = (<span id={spanId}>{getCurrentTime}</span>)
+
+  override def lowPriority = {
+    case Tick =>
+      partialUpdate(SetHtml(spanId, getCurrentTime))
+      setPingIn
+  }
+
+  // need to investigate this, why is this needed
+  def this( initSession: LiftSession, initName:Box[String],initDefaultXml:NodeSeq,initAttributes:Map[String,String] ) =
+          this( initSession, Box("BuildStatusRotate"), initName, initDefaultXml, initAttributes )
+
+  initCometActor(initSession, initType, initName, initDefaultXml, initAttributes)
+}

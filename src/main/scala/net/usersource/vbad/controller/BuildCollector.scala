@@ -84,6 +84,6 @@ class BuildCollector extends LiftActor {
 object BuildCollector {
   val actor = new BuildCollector
   
-  def builds: List[BuildStatus] = { (actor !! GetBuildStatuses).asA[List[BuildStatus]].get }
+  def builds: List[BuildStatus] = { (actor !! GetBuildStatuses).asA[List[BuildStatus]].getOrElse(Nil) }
 }
 
