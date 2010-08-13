@@ -23,7 +23,7 @@ class CurrentTime(initSession: LiftSession,
 
   private lazy val spanId = uniqueId + "_vbad_current_time"
 
-  def setPingIn = ActorPing.schedule(this, Tick, 5 seconds)
+  def setPingIn = ActorPing.schedule(this, Tick, 1 seconds)
 
   def render = {
     bind("currentTime" -> span)
@@ -64,7 +64,7 @@ class CurrentTime(initSession: LiftSession,
 
   // need to investigate this, why is this needed
   def this( initSession: LiftSession, initName:Box[String],initDefaultXml:NodeSeq,initAttributes:Map[String,String] ) =
-          this( initSession, Box("BuildStatusRotate"), initName, initDefaultXml, initAttributes )
+          this( initSession, Box("CurrentTime"), initName, initDefaultXml, initAttributes )
 
   initCometActor(initSession, initType, initName, initDefaultXml, initAttributes)
 }

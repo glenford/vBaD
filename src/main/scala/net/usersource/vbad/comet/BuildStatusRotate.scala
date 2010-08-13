@@ -18,10 +18,12 @@ class BuildStatusRotate(initSession: LiftSession,
 
 
   override def defaultPrefix = Full("vbad")
-
-  ActorPing.schedule(this, Tick, 60 seconds)
-
   private lazy val spanId = uniqueId + "_vbad_build_status"
+
+  setPingIn
+
+
+  def setPingIn = ActorPing.schedule(this, Tick, 60 seconds)
 
   def render = {
     bind("buildStatus" -> span)
@@ -45,7 +47,7 @@ class BuildStatusRotate(initSession: LiftSession,
   override def lowPriority = {
     case Tick =>
       partialUpdate(SetHtml(spanId, getBuildStatus))
-      ActorPing.schedule(this, Tick, 60 seconds)
+      setPingIn
   }
 
   // need to investigate this, why is this needed

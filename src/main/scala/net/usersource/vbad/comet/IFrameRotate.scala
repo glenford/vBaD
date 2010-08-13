@@ -16,12 +16,12 @@ class IFrameRotate(initSession: LiftSession,
                    initAttributes: Map[String, String]) extends CometActor {
 
   override def defaultPrefix = Full("vbad")
-
-  ActorPing.schedule(this, Tick, 60 seconds)
-
   private lazy val spanId = uniqueId + "_vbad_iframe"
+  var frameNumber = 0
+  setPingIn
 
-  private var frameNumber = 0;
+
+  def setPingIn = ActorPing.schedule(this, Tick, 60 seconds)
 
   def render = {
     bind("iframe" -> timeSpan)
@@ -44,7 +44,7 @@ class IFrameRotate(initSession: LiftSession,
   override def lowPriority = {
     case Tick =>
       partialUpdate(SetHtml(spanId, getIFrame))
-      ActorPing.schedule(this, Tick, 60 seconds)
+      setPingIn
   }
 
   initCometActor(initSession, initType, initName, initDefaultXml, initAttributes)
