@@ -39,7 +39,7 @@ class CurrentTime(initSession: LiftSession,
                   .appendLiteral(':')
                   .appendMinuteOfHour(2)
                   .appendLiteral(':')
-                  .appendMinuteOfHour(2)
+                  .appendSecondOfMinute(2)
                   .appendLiteral(" - ")
                   .appendDayOfMonth(2)
                   .appendLiteral(' ')

@@ -1,11 +1,11 @@
 <lift:surround with="bigwall" at="content">
   <div id="dashboard">
-    <div id="leftpane" style="position: absolute; top: 0px; left: 0px; width: 448px; height: 1200px; margin: 0px; padding: 0px;">
+    <div id="leftpane" style="position: absolute; top: 0px; left: 0px; width: 448px; height: 1080px; margin: 0px; padding: 0px;">
       <div id="statuspane" style="color: white;">
 	    <lift:comet type="BuildStatusRotate"><vbad:buildStatus>Missing Build Status</vbad:buildStatus></lift:comet>
       </div>
     </div>
-    <div id="toppane" style="position: absolute; top: 0px; left: 448px; width: 1024px; height: 216px; margin: 0px; padding: 0px;">
+    <div id="toppane" style="position: absolute; top: 0px; left: 448px; width: 1024px; height: 156px; margin: 0px; padding: 0px;">
         <div id="timepane" style="color: white; font-size: 32px; text-align:center;">
             <br/>
             <lift:comet type="CurrentTime"><vbad:currentTime>Missing Current Time</vbad:currentTime></lift:comet>
@@ -13,17 +13,18 @@
     </div>
     <div id="rightpane" style="position: absolute; top: 0px; left: 1472px; width: 448px; height: 1200px; margin: 0px; padding: 0px;">
       <div id="infopane" style="color: white;">
+        this is the info pane
       </div>
     </div>
-    <div id="centerpane" style="position: absolute; top: 216px; left: 448px; width: 1024px; height: 768px; margin: 0px; padding: 0px;">
+    <div id="centerpane" style="position: absolute; top: 156px; left: 448px; width: 1024px; height: 768px; margin: 0px; padding: 0px;">
       <div id="sitepane">
         <lift:comet type="RotatingIFrame"><vbad:iframe>Missing Rotating IFrame</vbad:iframe></lift:comet>
       </div>
     </div>
-    <div id="bottompane" style="position: absolute; top: 984px; left: 448px; width: 1024px; height: 216px; margin: 0px; padding: 0px;">
+    <div id="bottompane" style="position: absolute; top: 924px; left: 448px; width: 1024px; height: 156px; margin: 0px; padding: 0px;">
         <div id="tickerpane" style="color: white;">
+
         </div>
     </div>
-
   </div>
 </lift:surround>
