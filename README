@@ -6,12 +6,48 @@ vBad aims to provide a simple to setup and use platform
 to help you visualise your builds and deploys by providing
 a style of mashup dashboard.
 
+
+!! IMPORTANT !!
+
+This repository is still in flux, and is far from stable,
+use this at your own risk.
+
+
 History
 -------
 
 vBaD is based upon some cobbled together scripts and web
-pages that I put together some time ago.  Its an attempt
-to take those to the next level.
+pages that I used some time ago.  Unfortunately those scripts
+and pages were lost.  vBaD is an attempt to take those ideas
+to the next level, at the moment development is prototypical,
+testing is light, structure is non-ideal, but hopefully that
+will evolve as time goes on.
+
+
+Usage
+-----
+
+The quickest way to make use of vBaD at present is to clone
+the github repository and then use sbt to run it.
+
+sbt can be found here:
+
+http://code.google.com/p/simple-build-tool/
+
+then do the following:
+
+bash$ git clone git://github.com/glenford/vBaD.git
+bash$ cd vBaD
+bash$ sbt
+[info] Building project vBaD 0.1 against Scala 2.8.0
+[info]    using vBaDProject with sbt 0.7.4 and Scala 2.8.0
+> jetty-run
+
+I will download all its dependencies and build vBaD, then you
+will then have vBaD running on localhost at port 8080
+
+Point your browser at http://localhost:8080
+
 
 License
 -------
@@ -21,8 +57,4 @@ vBaD is licensed under the Apache 2.0 License
 
 
 
-IMPORTANT
-
-This repository is still in flux, and is far from stable,
-use this at your own risk.  
 
