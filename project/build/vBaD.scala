@@ -5,7 +5,7 @@ class vBaDProject(info: ProjectInfo) extends DefaultWebProject(info) {
   val commonsHttpVersion = "3.1"
   val jettyVersion = "6.1.22"
   val junitVersion = "4.5"
-  val specsVersion = "1.6.5"
+  val specsVersion = "1.6.6-SNAPSHOT"
   val h2databaseVersion = "1.2.138"
 
   val scalatoolsSnapshot = "Scala Tools Snapshot" at "http://scala-tools.org/repo-snapshots/"
