@@ -24,6 +24,15 @@ testing is light, structure is non-ideal, but hopefully that
 will evolve as time goes on.
 
 
+Current Features
+----------------
+
+Currently vBaD provides:
+
++ basic dashboard with a rotating iframe with some information
+  areas
+
+
 Usage
 -----
 
@@ -44,7 +53,7 @@ bash$ sbt
 > update
 > jetty-run
 
-I will download all its dependencies and build vBaD, then you
+It will download all its dependencies and build vBaD, then you
 will then have vBaD running on localhost at port 8080.
 
 Point your browser at http://localhost:8080
