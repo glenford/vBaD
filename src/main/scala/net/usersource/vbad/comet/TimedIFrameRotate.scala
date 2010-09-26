@@ -7,7 +7,7 @@ import net.liftweb.http.js.JsCmds.OnLoad
 import net.liftweb.common._
 import net.liftweb.util._
 import net.liftweb.util.Helpers._
-import scala.xml.{Text, NodeSeq}
+import scala.xml.NodeSeq
 import net.usersource.vbad.model.Site
 
 class TimedIFrameRotate(initSession: LiftSession,

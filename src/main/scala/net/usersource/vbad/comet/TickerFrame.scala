@@ -6,8 +6,6 @@ import net.liftweb.common.{Full, Box}
 import net.liftweb.http.{CometActor, LiftSession}
 import net.liftweb.util.ActorPing
 import net.liftweb.util.Helpers._
-import org.joda.time.{DateTimeZone, DateTime}
-import org.joda.time.format.DateTimeFormatterBuilder
 import util.Random
 
 class TickerFrame(initSession: LiftSession,
