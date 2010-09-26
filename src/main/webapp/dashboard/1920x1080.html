@@ -18,10 +18,14 @@
     </div>
     <div id="centerpane" style="position: absolute; top: 156px; left: 448px; width: 1024px; height: 768px; margin: 0px; padding: 0px;">
       <div id="sitepane">
-        <lift:comet type="RotatingIFrame"><vbad:iframe>Missing Rotating IFrame</vbad:iframe></lift:comet>
+        <iframe id="theiframe" src="_blank" width="1024" height="768"></iframe>
+        <lift:comet type="RotatingTimedIFrame"></lift:comet>
       </div>
     </div>
-    <div id="bottompane" style="position: absolute; top: 924px; left: 448px; width: 1024px; height: 156px; margin: 0px; padding: 0px;">
+    <div id="observerpane" style="position: absolute; top: 924px; left: 448px; width: 1024px; height: 30px; margin: 0px; padding: 0px;color: white; font-size: 26px; text-align:center;">
+       
+    </div>
+    <div id="bottompane" style="position: absolute; top: 924px; left: 448px; width: 1024px; height: 126px; margin: 0px; padding: 0px;">
         <div id="tickerpane" style="color: white; font-size: 32px;">
             <br/>
             <lift:comet type="TickerFrame"><vbad:tickerFrame>Missing Ticker IFrame</vbad:tickerFrame></lift:comet>

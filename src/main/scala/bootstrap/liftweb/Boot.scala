@@ -11,7 +11,7 @@ import Loc._
 import mapper._
 
 import net.usersource.vbad.model.{Build, Site, CIPlatform}
-import net.usersource.vbad.comet.{TickerFrame, CurrentTime, IFrameRotate, BuildStatusRotate}
+import net.usersource.vbad.comet.{TickerFrame, CurrentTime, IFrameRotate, TimedIFrameRotate, BuildStatusRotate}
 
 class Boot {
 
@@ -51,6 +51,13 @@ class Boot {
                              attributes,
                              session) => {
                                new IFrameRotate(session, Full("RotatingIFrame"),name, defaultXml, attributes)
+      }
+      case CometCreationInfo("RotatingTimedIFrame",
+                             name,
+                             defaultXml,
+                             attributes,
+                             session) => {
+                               new TimedIFrameRotate(session, Full("RotatingTimedIFrame"),name, defaultXml, attributes)
       }
       case CometCreationInfo("CurrentTime",
                              name,
