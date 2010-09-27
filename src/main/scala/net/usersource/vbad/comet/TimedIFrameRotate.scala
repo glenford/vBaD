@@ -29,7 +29,7 @@ class TimedIFrameRotate(initSession: LiftSession,
     jscmd
   }
 
-  def jscmd: JsCmd = { OnLoad(JsRaw("load_into_frame( 'http://" + nextUrl +"','theiframe','observerpane')").cmd) }
+  def jscmd: JsCmd = { OnLoad(JsRaw("load_into_frame( '" + nextUrl +"','theiframe','observerpane')").cmd) }
 
   def nextUrl = {
     val sites = Site.findAll()
