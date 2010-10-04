@@ -1,6 +1,7 @@
 import sbt._
+import webbytest.HtmlTestsProject
 
-class vBaDProject(info: ProjectInfo) extends DefaultWebProject(info) with IdeaProject {
+class vBaDProject(info: ProjectInfo) extends DefaultWebProject(info) with IdeaProject with HtmlTestsProject {
   val liftVersion = "2.1"
   val commonsHttpVersion = "3.1"
   val jettyVersion = "6.1.22"
