@@ -55,21 +55,14 @@ bash$ cd webbytest
   rather than DefaultProject:
   src/main/scala/webbytest/HtmlTestsProject.scala
 
-bash$ sbt
-> update
-> publish-local
-
+bash$ sbt update publish-local
 
 then do the following:
 
 bash$ cd ..
 bash$ git clone git://github.com/glenford/vBaD.git
 bash$ cd vBaD
-bash$ sbt
-[info] Building project vBaD 0.1 against Scala 2.8.0
-[info]    using vBaDProject with sbt 0.7.4 and Scala 2.8.0
-> update
-> jetty-run
+bash$ sbt update jetty-run
 
 It will download all its dependencies and build vBaD, then you
 will then have vBaD running on localhost at port 8080.
@@ -80,13 +73,13 @@ If you wish to deploy to a web container - at this point only
 Jetty is actively supported - the you can create a war by using
 the sbt package command.
 
-> package
+bash$ sbt update package
 
 If you wish to work on the codebase and use IntelliJ, ensure you
 have the scala plugin, and use the following to generate a project
 file
 
-> idea
+bash$ sbt idea
 
 
 
