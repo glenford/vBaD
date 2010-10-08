@@ -15,7 +15,8 @@ class vBaDProject(info: ProjectInfo) extends DefaultWebProject(info) with IdeaPr
     "commons-httpclient" % "commons-httpclient" % commonsHttpVersion % "compile->default",
     "org.mortbay.jetty" % "jetty" % jettyVersion % "test->default",
     "junit" % "junit" % junitVersion % "test->default",
-    "org.scala-tools.testing" %% "specs" % specsVersion % "test->default",
+    //"org.scala-tools.testing" %% "specs" % specsVersion % "test->default",
+    "org.scalatest" % "scalatest" % "1.2" % "test->default",
     "com.h2database" % "h2" % h2databaseVersion
   ) ++ super.libraryDependencies
 }
