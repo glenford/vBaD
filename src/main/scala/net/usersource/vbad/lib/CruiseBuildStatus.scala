@@ -22,7 +22,7 @@ case class CruiseStage( name: String, jobs: List[CruiseJob] ) {
 
   def toXhtml: Elem = {
     <div name="stage-container" style="position: relative; left: 5px; top: 5px; width: 110px; height: 30px">
-      <div name="stage" style="position: relative; left: 5px; top: 5px; width: 100px; height: 20px; background-color: {colour}; text-align: center; vertical-align: middle;">
+      <div name="stage" style={ "position: relative; left: 5px; top: 5px; width: 100px; height: 20px; background-color: " + colour + "; text-align: center; vertical-align: middle;"}>
         {name}
        </div>
      </div>
@@ -37,7 +37,7 @@ case class CruisePipeline( name: String, stages: List[CruiseStage] ) extends Bui
           {name}
          </div>
       </div>
-      {stages.foreach(_.toXhtml)}
+      {for( stage <- stages ) yield stage.toXhtml}
     </div>
   }
 }

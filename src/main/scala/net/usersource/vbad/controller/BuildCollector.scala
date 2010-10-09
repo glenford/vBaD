@@ -29,28 +29,29 @@ class BuildCollector extends LiftActor {
 
   def getPlatformResponse( platform: CIPlatform ): Response = {
     if( platform.username.is.nonEmpty ) {
-      println( "attempting access to [" + platform.url + "][" + platform.username + "][" + platform.password + "]" )
+      println("attempting access to [" + platform.url + "][" + platform.username + "][" + platform.password + "]" )
       Http get( platform.url, platform.username, platform.password )
     }
     else {
+      println("attempting access to [" + platform.url + "]")
       Http get platform.url
     }
   }
 
   def getBuild( name: String, platform: CIPlatform ): Option[BuildResults] = {
     try {
-    val response = getPlatformResponse(platform)
-    if( response.status == 200 ) {
-      platform.platform.is.toUpperCase match {
-        case "CRUISE" | "GO" => { CruisePipeline(name,response.body.get) }
-        case "HUDSON" => { None }
-        case _ => { None }
+      val response = getPlatformResponse(platform)
+      if( response.status == 200 ) {
+        platform.platform.is.toUpperCase match {
+          case "CRUISE" | "GO" => { CruisePipeline(name,response.body.get) }
+          case "HUDSON" => { None }
+          case _ => { None }
+        }
       }
-    }
-    else {
-      println("no valid response")
-      None
-    }
+      else {
+        println("Error [" + response.status +"] response from [" + platform.url + "]")
+        None
+      }
     }
     catch {
       case e:Exception => { println( "Exception in getting platform: " + e)
@@ -64,8 +65,7 @@ class BuildCollector extends LiftActor {
     val buildList = Build.findAll
     buildList.foreach( build => {
       val buildStatus = getBuild( build.buildName.is, CIPlatform.find(build.platform).get)
-      if( buildStatus.isDefined )
-        listOfBuildStatus = buildStatus.get :: listOfBuildStatus
+      if( buildStatus.isDefined ) listOfBuildStatus = buildStatus.get :: listOfBuildStatus
     })
     builds = listOfBuildStatus
   }

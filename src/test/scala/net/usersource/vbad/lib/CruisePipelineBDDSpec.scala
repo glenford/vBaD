@@ -73,6 +73,27 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
       pipeline.stages(0).jobs(0).timestamp === DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2010-08-17 19:03:35")
     }
 
+    scenario("able to deal with a single pipeline, stage and job") {
+      given("a valid xml")
+      val simplePipeline = <Projects>
+                             <Project name="vBaD :: defaultStage" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="6" lastBuildTime="2010-10-09T21:22:16" webUrl="http://192.168.1.65:8153/cruise/pipelines/vBaD/6/defaultStage/1" />
+                             <Project name="vBaD :: defaultStage :: defaultJob" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="6" lastBuildTime="2010-10-09T21:22:16" webUrl="http://192.168.1.65:8153/cruise/tab/build/detail/vBaD/6/defaultStage/1/defaultJob" />
+                           </Projects>
+
+      when("a pipeline is extracted")
+      val pipeline = CruisePipeline("vBaD", simplePipeline.toString).get
+
+      then("the stage details will be correct")
+      pipeline.stages(0).name === "defaultStage"
+      
+      and("the job details will be correct")
+      pipeline.stages(0).jobs(0).name === "defaultJob"
+      pipeline.stages(0).jobs(0).status === "Failure"
+      pipeline.stages(0).jobs(0).timestamp === DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2010-10-09 21:22:16")
+
+      println(pipeline.toXhtml.toString)
+    }
+
   }
 
 }
