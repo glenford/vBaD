@@ -6,7 +6,7 @@ import net.liftweb.util.ActorPing
 import net.liftweb.util.Helpers._
 import net.usersource.http.simple.{Http,Response}
 import net.usersource.vbad.model.{CIPlatform, Build}
-import net.usersource.vbad.lib.{BuildResults, HudsonBuildFactory, BuildStatus, CruisePipeline}
+import net.usersource.vbad.lib.{BuildResults, CruisePipeline}
 
 case object GetBuildStatuses
 case object UpdateBuildStatuses

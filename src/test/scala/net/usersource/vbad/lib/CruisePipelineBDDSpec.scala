@@ -90,8 +90,6 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
       pipeline.stages(0).jobs(0).name === "defaultJob"
       pipeline.stages(0).jobs(0).status === "Failure"
       pipeline.stages(0).jobs(0).timestamp === DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2010-10-09 21:22:16")
-
-      println(pipeline.toXhtml.toString)
     }
 
   }
