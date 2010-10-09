@@ -4,6 +4,7 @@ package net.usersource.vbad.lib
 
 import org.scalatest.matchers.MustMatchers
 import org.scalatest.{FeatureSpec, GivenWhenThen}
+import org.joda.time.format.DateTimeFormat
 
 
 class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatchers {
@@ -41,6 +42,8 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
     }
 
     scenario("process a different pipeline from the xml") {
+      given("a valid xml")
+
       when("a pipleine is extracted")
       val pipeline = CruisePipeline("PipelineB", data.toString).get
 
@@ -58,6 +61,18 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
 
       and("the name of the job will be correct")
       pipeline.stages(0).jobs(0).name === "buildAndUnitTest"
+    }
+
+    scenario("correct job information is reflected in the extracted pipeline") {
+      given("a valid xml")
+
+      when("a pipeline is extracted")
+      val pipeline = CruisePipeline("PipelineB", data.toString).get
+
+      then("the job details will be correct")
+      pipeline.stages(0).jobs(0).name === "buildAndUnitTest"
+      pipeline.stages(0).jobs(0).status === "Success"
+      pipeline.stages(0).jobs(0).timestamp === DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2010-08-17 19:03:35")
     }
 
   }

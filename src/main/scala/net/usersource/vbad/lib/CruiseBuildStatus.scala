@@ -13,6 +13,7 @@ case class CruisePipeline( name: String, stages: List[CruiseStage] )
 
 
 object CruisePipeline {
+  private val dtParser: DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss")
 
   private def stagesFromXml(name: String, xml: Elem): List[CruiseStage] = {
     var stages = new ListBuffer[CruiseStage]()
@@ -20,12 +21,11 @@ object CruisePipeline {
       val h = project.attribute("name").get.text.split(" :: ").toList
       if( h(0) == name ) h match {
         case List(pipelineName, stage: String) => {
-          println("pipelineName => " + pipelineName )
           if( ! stages.exists(st => st.name == stage) ) stages += new CruiseStage(stage,Nil)
         }
         case List(pipelineName, stageName: String, jobName: String ) => {
-          val status = "PASSED" // todo
-          val timestamp = new DateTime // todo
+          val status = project.attribute("lastBuildStatus").get.text
+          val timestamp = dtParser.parseDateTime(project.attribute("lastBuildTime").get.text)
           val job = new CruiseJob(jobName,status,timestamp)
           if( ! stages.exists(stage => stage.name == stageName) ) stages += new CruiseStage(stageName,List(job))
           else {
@@ -38,7 +38,6 @@ object CruisePipeline {
         case _ => {}
       }
     } )
-
     stages.toList
   }
 
@@ -50,7 +49,6 @@ object CruisePipeline {
     val stages = stagesFromXml(name,xml)
     if( stages.isEmpty ) None else Some(new CruisePipeline(name,stages))
   }
-
 
 }
 
