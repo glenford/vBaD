@@ -6,14 +6,14 @@ import net.liftweb.util.ActorPing
 import net.liftweb.util.Helpers._
 import net.usersource.http.simple.{Http,Response}
 import net.usersource.vbad.model.{CIPlatform, Build}
-import net.usersource.vbad.lib.{HudsonBuildFactory, CruiseBuildFactory, BuildStatus}
+import net.usersource.vbad.lib.{BuildResults, HudsonBuildFactory, BuildStatus, CruisePipeline}
 
 case object GetBuildStatuses
 case object UpdateBuildStatuses
 
 class BuildCollector extends LiftActor {
 
-  var builds: List[BuildStatus] = Nil
+  var builds: List[BuildResults] = Nil
 
   updateBuilds
   ActorPing.schedule(this, UpdateBuildStatuses, 60 seconds)
@@ -37,19 +37,14 @@ class BuildCollector extends LiftActor {
     }
   }
 
-  def getBuild( name: String, platform: CIPlatform ): Option[BuildStatus] = {
+  def getBuild( name: String, platform: CIPlatform ): Option[BuildResults] = {
     try {
     val response = getPlatformResponse(platform)
     if( response.status == 200 ) {
-      if( platform.platform.is.equalsIgnoreCase("cruise") ) {
-        CruiseBuildFactory.build(name,response.body.get)
-      }
-      else if( platform.platform.is.equalsIgnoreCase("hudson") ) {
-        HudsonBuildFactory.build(name,response.body.get)
-      }
-      else {
-        println("platform not recognised : " + platform.platform.is)
-        None
+      platform.platform.is.toUpperCase match {
+        case "CRUISE" | "GO" => { CruisePipeline(name,response.body.get) }
+        case "HUDSON" => { None }
+        case _ => { None }
       }
     }
     else {
@@ -65,7 +60,7 @@ class BuildCollector extends LiftActor {
   }
 
   def updateBuilds = {
-    var listOfBuildStatus: List[BuildStatus] = Nil
+    var listOfBuildStatus: List[BuildResults] = Nil
     val buildList = Build.findAll
     buildList.foreach( build => {
       val buildStatus = getBuild( build.buildName.is, CIPlatform.find(build.platform).get)
@@ -75,7 +70,7 @@ class BuildCollector extends LiftActor {
     builds = listOfBuildStatus
   }
 
-  def getBuilds: List[BuildStatus] = {
+  def getBuilds: List[BuildResults] = {
     builds
   }
 
@@ -84,6 +79,6 @@ class BuildCollector extends LiftActor {
 object BuildCollector {
   val actor = new BuildCollector
   
-  def builds: List[BuildStatus] = { (actor !! GetBuildStatuses).asA[List[BuildStatus]].getOrElse(Nil) }
+  def builds: List[BuildResults] = { (actor !! GetBuildStatuses).asA[List[BuildResults]].getOrElse(Nil) }
 }
 

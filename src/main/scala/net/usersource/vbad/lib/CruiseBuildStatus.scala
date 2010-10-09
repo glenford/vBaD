@@ -5,11 +5,42 @@ import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
 import org.joda.time.DateTime
 import collection.mutable.ListBuffer
 
+trait BuildResults {
+  def toXhtml = <div>UNDEFINED</div>
+}
 
 case class CruiseJob( name: String, status: String, timestamp: DateTime )
-case class CruiseStage( name: String, jobs: List[CruiseJob] )
-case class CruisePipeline( name: String, stages: List[CruiseStage] )
 
+case class CruiseStage( name: String, jobs: List[CruiseJob] ) {
+
+  var colour = "green"
+  jobs.foreach( job => job.status match {
+    case "Success" => {}
+    case "Failure" => colour = "red"
+    case _ => colour = "yellow"
+  })
+
+  def toXhtml: Elem = {
+    <div name="stage-container" style="position: relative; left: 5px; top: 5px; width: 110px; height: 30px">
+      <div name="stage" style="position: relative; left: 5px; top: 5px; width: 100px; height: 20px; background-color: {colour}; text-align: center; vertical-align: middle;">
+        {name}
+       </div>
+     </div>
+  }
+}
+
+case class CruisePipeline( name: String, stages: List[CruiseStage] ) extends BuildResults {
+  override def toXhtml: Elem = {
+    <div name="pipeline" style="width: 130px; height: 130px; background-color: #660000;">
+      <div name="pipeline-title-container" style="position: relative; left: 5px; top: 5px; width: 110px; height: 30px">
+        <div name="pipeline-container" style="position: relative; left: 5px; top: 5px; width: 100px; height: 20px; text-align: center; vertical-align: middle;">
+          {name}
+         </div>
+      </div>
+      {stages.foreach(_.toXhtml)}
+    </div>
+  }
+}
 
 
 object CruisePipeline {
@@ -32,7 +63,7 @@ object CruisePipeline {
             val idx = stages.findIndexOf(stage => stage.name == stageName)
             val stage = stages(idx)
             stages.remove(idx)
-            stages += new CruiseStage( stage.name, job :: stage.jobs)
+            stages += new CruiseStage( stage.name, job :: stage.jobs )
           }
         }
         case _ => {}
@@ -52,7 +83,7 @@ object CruisePipeline {
 
 }
 
-
+/*
 
 class CruiseBuildStatus( name:String, status: String, timestamp: String )
         extends BuildStatus(name,status,timestamp)
@@ -84,3 +115,5 @@ object CruiseBuildFactory {
     listFromXml(source).filter( status => status.name.startsWith(name) )
   }
 }
+
+*/

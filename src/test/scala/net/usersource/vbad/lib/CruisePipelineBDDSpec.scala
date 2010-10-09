@@ -1,7 +1,5 @@
 package net.usersource.vbad.lib
 
-
-
 import org.scalatest.matchers.MustMatchers
 import org.scalatest.{FeatureSpec, GivenWhenThen}
 import org.joda.time.format.DateTimeFormat
