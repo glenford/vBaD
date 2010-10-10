@@ -5,9 +5,7 @@ import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
 import org.joda.time.DateTime
 import collection.mutable.ListBuffer
 
-trait BuildResults {
-  def toXhtml = <div>UNDEFINED</div>
-}
+
 
 case class CruiseJob( name: String, status: String, timestamp: DateTime )
 
