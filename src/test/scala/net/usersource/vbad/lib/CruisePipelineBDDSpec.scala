@@ -35,6 +35,7 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
       then("the extacted name will be correct")
       pipeline.name must be === "PipelineA"
 
+
       and("the length will be correct")
       pipeline.stages.length must be === 6
     }
@@ -52,13 +53,13 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
       pipeline.stages.length must be === 1
 
       and("the stage name will be correct")
-      pipeline.stages(0).name === "InitialStage"
+      pipeline.stages(0).name must be === "InitialStage"
 
       and("the number of jobs will be correct")
-      pipeline.stages(0).jobs.length === 1
+      pipeline.stages(0).jobs.length must be === 1
 
       and("the name of the job will be correct")
-      pipeline.stages(0).jobs(0).name === "buildAndUnitTest"
+      pipeline.stages(0).jobs(0).name must be === "buildAndUnitTest"
     }
 
     scenario("correct job information is reflected in the extracted pipeline") {
@@ -68,9 +69,9 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
       val pipeline = CruisePipeline("PipelineB", data.toString).get
 
       then("the job details will be correct")
-      pipeline.stages(0).jobs(0).name === "buildAndUnitTest"
-      pipeline.stages(0).jobs(0).status === "Success"
-      pipeline.stages(0).jobs(0).timestamp === DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2010-08-17 19:03:35")
+      pipeline.stages(0).jobs(0).name must be === "buildAndUnitTest"
+      pipeline.stages(0).jobs(0).status must be === "Success"
+      pipeline.stages(0).jobs(0).timestamp must be === DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2010-08-17 19:03:35")
     }
 
     scenario("able to deal with a single pipeline, stage and job") {
@@ -84,12 +85,33 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
       val pipeline = CruisePipeline("vBaD", simplePipeline.toString).get
 
       then("the stage details will be correct")
-      pipeline.stages(0).name === "defaultStage"
+      pipeline.stages(0).name must be === "defaultStage"
       
       and("the job details will be correct")
-      pipeline.stages(0).jobs(0).name === "defaultJob"
-      pipeline.stages(0).jobs(0).status === "Failure"
-      pipeline.stages(0).jobs(0).timestamp === DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2010-10-09 21:22:16")
+      pipeline.stages(0).jobs(0).name must be === "defaultJob"
+      pipeline.stages(0).jobs(0).status must be === "Failure"
+      pipeline.stages(0).jobs(0).timestamp must be  === DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2010-10-09 21:22:16")
+    }
+
+    scenario("able to generate a status that can differentiate between failed and not run in this build") {
+      given("an xml with a failure mid pipeline")
+      val simplePipeline = <Projects>
+                             <Project name="vBaD :: firstStage" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="6" lastBuildTime="2010-10-09T21:22:16" webUrl="http://192.168.1.65:8153/cruise/pipelines/vBaD/6/defaultStage/1" />
+                             <Project name="vBaD :: firstStage :: defaultJob" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="6" lastBuildTime="2010-10-09T21:22:16" webUrl="http://192.168.1.65:8153/cruise/tab/build/detail/vBaD/6/defaultStage/1/defaultJob" />
+                             <Project name="vBaD :: secondStage" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="6" lastBuildTime="2010-10-09T21:22:16" webUrl="http://192.168.1.65:8153/cruise/pipelines/vBaD/6/defaultStage/1" />
+                             <Project name="vBaD :: secondStage :: defaultJob" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="6" lastBuildTime="2010-10-09T21:22:16" webUrl="http://192.168.1.65:8153/cruise/tab/build/detail/vBaD/6/defaultStage/1/defaultJob" />
+                             <Project name="vBaD :: thirdStage" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="5" lastBuildTime="2010-10-08T21:22:16" webUrl="http://192.168.1.65:8153/cruise/pipelines/vBaD/5/defaultStage/1" />
+                             <Project name="vBaD :: thirdStage :: defaultJob" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="5" lastBuildTime="2010-10-08T21:22:16" webUrl="http://192.168.1.65:8153/cruise/tab/build/detail/vBaD/5/defaultStage/1/defaultJob" />
+                           </Projects>
+
+      when("the pipeline is extracted")
+      val status = CruisePipeline("vBaD", simplePipeline.toString).get
+
+      then("the correct representation of stages after the failure")
+      status.stages(0).status must be === "Success"
+      status.stages(1).status must be === "Failure"
+      status.stages(2).status must be === "NotBuilt"
+
     }
 
   }
