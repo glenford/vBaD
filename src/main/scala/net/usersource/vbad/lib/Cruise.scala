@@ -28,8 +28,8 @@ case class CruiseStage( name: String, buildNumber: Int, jobs: List[CruiseJob] ) 
   }}
 
   def toXhtml: Elem = {
-    <div name="stage-container" style="position: relative; left: 5px; top: 5px; width: 110px; height: 30px">
-      <div name="stage" style={ "position: relative; left: 5px; top: 5px; width: 100px; height: 20px; background-color: " + colour + "; text-align: center; vertical-align: middle;"}>
+    <div name="stage-container" style="position: relative; left: 5px; top: 5px; width: 410px; height: 50px">
+      <div name="stage" style={ "position: relative; left: 5px; top: 5px; width: 400px; height: 40px; background-color: " + colour + "; text-align: center; vertical-align: middle;"}>
         {name}
        </div>
      </div>
@@ -37,10 +37,22 @@ case class CruiseStage( name: String, buildNumber: Int, jobs: List[CruiseJob] ) 
 }
 
 case class CruisePipeline( name: String, stages: List[CruiseStage] ) extends BuildResults {
+  val colour = {
+    var c = "#006600" // dark grean
+    stages.foreach( stage => stage.colour match {
+      case "green" => {}
+      case "red" => c = "#660000"
+      case _ => if( c != "red" ) c = "#666666"
+    })
+    c
+  }
+
   override def toXhtml: Elem = {
-    <div name="pipeline" style="width: 130px; height: 130px; background-color: #660000;">
-      <div name="pipeline-title-container" style="position: relative; left: 5px; top: 5px; width: 110px; height: 30px">
-        <div name="pipeline-container" style="position: relative; left: 5px; top: 5px; width: 100px; height: 20px; text-align: center; vertical-align: middle;">
+    val styleHeight = 5 + (stages.length + 1) * 50
+
+    <div name="pipeline" style={ "width: 430px; height: " + styleHeight + "px; background-color: " + colour +"; font-size: 30px;" }>
+      <div name="pipeline-title-container" style="position: relative; left: 5px; top: 5px; width: 410px; height: 50px">
+        <div name="pipeline-container" style="position: relative; left: 5px; top: 5px; width: 400px; height: 40px; text-align: center; vertical-align: middle;">
           {name}
          </div>
       </div>
