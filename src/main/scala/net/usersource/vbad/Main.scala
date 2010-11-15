@@ -15,8 +15,6 @@ object Main {
     context.setServer(server)
     context.setContextPath("/")
     context.setWar("src/main/webapp")
-    //val context = new Context(_server, "/", Context.SESSIONS)
-    //context.addFilter(new FilterHolder(new LiftFilter()), "/");
     server.addHandler(context)
     server.start
     server.join
