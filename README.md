@@ -29,7 +29,7 @@ Current Features
 
 Currently vBaD provides:
 
-+ builds embedded into a single jar, 
++ builds embedded into a single executeable war 
 + basic dashboard with a rotating iframe with some information
   areas
   - iframe times how long it takes to load and reports that in
@@ -44,29 +44,42 @@ the github repository and then use sbt to run it.
 
 sbt can be found here:
 
-http://code.google.com/p/simple-build-tool/
+	http://code.google.com/p/simple-build-tool/
 
-then do the following:
+then get the sbt-jetty-embed plugin with the following:
 
-bash$ git clone git://github.com/glenford/vBaD.git
-bash$ cd vBaD
-bash$ sbt update jetty-run
+	bash$ git clone git://github.com/glenford/sbt-jetty-embed.git
+	bash$ cd sbt-jetty-embed/plugin
+	bash$ sbt update publish-local
+	bash$ cd ../..
+
+
+Then get vBaD running
+
+	bash$ git clone git://github.com/glenford/vBaD.git
+	bash$ cd vBaD
+	bash$ sbt update jetty-run
+
 
 It will download all its dependencies and build vBaD, then you
 will then have vBaD running on localhost at port 8080.
 
 Point your browser at http://localhost:8080
 
-If you wish to build to a self-contained jar then do the following:
+If you wish to build to an executeable war then do the following:
 
-bash$ sbt update proguard
+	bash$ sbt update jetty-embed-prepare package
+
+You can then run it by:
+
+	bash$ java -jar target/scala_2.8.0/vbad_2.8.0-0.1.war 
+
 
 If you wish to work on the codebase and use IntelliJ, ensure you
-have the scala plugin, and use the following to generate a project
-file
+have the scala plugin enabled in IntelliJ, and use the following
+to generate the project files
 
-bash$ sbt idea
-
+	bash$ sbt idea
 
 
 License
