@@ -3,8 +3,8 @@ vBaD - Visualising Builds and Deploys
 =====================================
 
 vBad aims to provide a simple to setup and use platform
-to help you visualise your builds and deploys by providing
-a style of mashup dashboard.
+to help you visualise your builds and deploys and other
+information by providing a style of mashup dashboard.
 
 
 !! IMPORTANT !!
@@ -68,12 +68,15 @@ Point your browser at http://localhost:8080
 
 If you wish to build to an executeable war then do the following:
 
-	bash$ sbt update jetty-embed-prepare package
+	bash$ sbt update jetty-embed-prepare compile package
 
 You can then run it by:
 
 	bash$ java -jar target/scala_2.8.0/vbad_2.8.0-0.1.war 
 
+
+Working on the codebase
+-----------------------
 
 If you wish to work on the codebase and use IntelliJ, ensure you
 have the scala plugin enabled in IntelliJ, and use the following

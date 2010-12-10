@@ -2,7 +2,6 @@
 Current TODO/IDEAS
 ------------------
 
-[] iframe add [showing: URL]across the bottom
 [] improve html/css
 [] improve templating
 [] add wizard
@@ -10,4 +9,7 @@ Current TODO/IDEAS
 [] GIT
 [] Jira
 [] Twitter
+
+[] Widget to show difference in number of commits between deployed and repository.
+
 
