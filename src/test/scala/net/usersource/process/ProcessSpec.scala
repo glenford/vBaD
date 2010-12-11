@@ -10,14 +10,14 @@ class ProcessSpec extends FeatureSpec with GivenWhenThen with MustMatchers {
     scenario("a local script") {
 
       given("a valid local script")
-      val script = "simple_script.sh"
+      val script = "src/test/resources/process_spec_script.sh"
 
       when("it is executed")
       val process = Process(script) run
 
       then("the expected return code is captured")
       process.waitTillDone
-      process.returnCode must be === 0
+      process.returnCode.get must be === 0
     }
   }
 

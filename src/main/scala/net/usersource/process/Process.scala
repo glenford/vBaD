@@ -2,12 +2,25 @@ package net.usersource.process
 
 
 class Process( val args: List[String] ) {
+  
+  implicit def convertScalaListToJavaList(aList:List[String]) = java.util.Arrays.asList(aList.toArray: _*)
 
-  def run: Process = { this }
+  var rc: Option[Int] = None
+  var process: Option[java.lang.Process] = None
+  val processBuilder = new ProcessBuilder(args)
 
-  def waitTillDone: Process = { this }
+  
+  def run: Process = {
+    process = Some(processBuilder.start)
+    this
+  }
 
-  def returnCode = { -1 }
+  def waitTillDone: Process = {
+    rc = Some(process.get.waitFor)
+    this
+  }
+
+  def returnCode = { rc }
 
 }
 
