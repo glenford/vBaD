@@ -6,8 +6,11 @@ vBad aims to provide a simple to setup and use platform
 to help you visualise your builds and deploys and other
 information by providing a style of mashup dashboard.
 
-
 !! IMPORTANT !!
+
+This project currently only supports OSX whilst in its current
+state - if anyone needs compatibility with another OS please
+let me know - not difficult to do.
 
 This repository is still in flux, and is far from stable,
 use this at your own risk.
@@ -34,6 +37,7 @@ Currently vBaD provides:
   areas
   - iframe times how long it takes to load and reports that in
     a status pane
++ TTS announcement box
 
 
 Usage
