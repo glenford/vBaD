@@ -24,6 +24,17 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
                  <Project name="PipelineB :: InitialStage :: buildAndUnitTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="6" lastBuildTime="2010-08-17T19:03:35" webUrl="http://10.23.30.42:8153/cruise/tab/build/detail/BonusTestTool/6/BuildUnitTest/1/build" />
                </Projects>
 
+  val dataIssueOne = <Projects>
+      <Project name="BonusSystem :: BuildAndUnitTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1 :: 2" lastBuildTime="2010-12-16T18:20:20" webUrl="http://10.23.30.42:8153/cruise/tab/stage/detail/BonusSystem/1/BuildAndUnitTest/2"/>
+      <Project name="BonusSystem :: BuildAndUnitTest :: build" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1 :: 2" lastBuildTime="2010-12-16T18:20:20" webUrl="http://10.23.30.42:8153/cruise/tab/build/detail/BonusSystem/1/BuildAndUnitTest/2/build"/>
+      <Project name="BonusSystem :: IntegrationTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1" lastBuildTime="2010-12-16T18:21:15" webUrl="http://10.23.30.42:8153/cruise/tab/stage/detail/BonusSystem/1/IntegrationTest/1"/>
+      <Project name="BonusSystem :: IntegrationTest :: IntegrationTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1" lastBuildTime="2010-12-16T18:21:15" webUrl="http://10.23.30.42:8153/cruise/tab/build/detail/BonusSystem/1/IntegrationTest/1/IntegrationTest"/>
+      <Project name="BonusSystem :: CodeCoverage" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1" lastBuildTime="2010-12-16T18:42:19" webUrl="http://10.23.30.42:8153/cruise/tab/stage/detail/BonusSystem/1/CodeCoverage/1"/>
+      <Project name="BonusSystem :: CodeCoverage :: sonar" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1" lastBuildTime="2010-12-16T18:42:19" webUrl="http://10.23.30.42:8153/cruise/tab/build/detail/BonusSystem/1/CodeCoverage/1/sonar"/>
+      <Project name="BonusTestTool :: BuildUnitTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="2" lastBuildTime="2010-12-16T18:24:25" webUrl="http://10.23.30.42:8153/cruise/tab/stage/detail/BonusTestTool/2/BuildUnitTest/1"/>
+      <Project name="BonusTestTool :: BuildUnitTest :: build" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="2" lastBuildTime="2010-12-16T18:24:25" webUrl="http://10.23.30.42:8153/cruise/tab/build/detail/BonusTestTool/2/BuildUnitTest/1/build"/>
+  </Projects>
+
   feature("can create a pipeline from xml") {
 
     scenario("process a pipeline from the xml") {
@@ -38,6 +49,20 @@ class CruisePipelineBDDSpec extends FeatureSpec with GivenWhenThen with MustMatc
 
       and("the length will be correct")
       pipeline.stages.length must be === 6
+    }
+
+    scenario("process a pipeline from the xml with partial build values") {
+      given("a valid xml")
+
+      when("a pipleine is extracted")
+      val pipeline = CruisePipeline("BonusSystem", dataIssueOne.toString).get
+
+      then("the extacted name will be correct")
+      pipeline.name must be === "BonusSystem"
+
+
+      and("the length will be correct")
+      pipeline.stages.length must be === 3
     }
 
     scenario("process a different pipeline from the xml") {

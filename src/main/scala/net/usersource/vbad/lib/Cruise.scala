@@ -69,7 +69,8 @@ object CruisePipeline {
     var stages = new ListBuffer[CruiseStage]()
     xml \\ "Project" foreach( project => {
       val h = project.attribute("name").get.text.split(" :: ").toList
-      val buildNumber = project.attribute("lastBuildLabel").get.text.toInt
+      val buildLabel = project.attribute("lastBuildLabel").get.text.split(" :: ").toList
+      val buildNumber = buildLabel(0).toInt
       if( h(0) == name ) h match {
         case List(pipelineName, stage: String) => {
           if( ! stages.exists(st => st.name == stage) ) stages += new CruiseStage(stage,buildNumber,Nil)
