@@ -2,7 +2,7 @@ import sbt._
 import net.usersource.jettyembed.JettyEmbedWebProject
 
 class vBaDProject(info: ProjectInfo) extends JettyEmbedWebProject(info) with IdeaProject {
-  val liftVersion = "2.1"
+  val liftVersion = "2.2"
   val commonsHttpVersion = "3.1"
   val junitVersion = "4.5"
   val specsVersion = "1.6.5"
